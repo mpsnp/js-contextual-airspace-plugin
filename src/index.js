@@ -450,7 +450,7 @@ export default class ContextualAirspacePlugin {
 
 }
 
-ContextualAirspace.defaults = {
+ContextualAirspacePlugin.defaults = {
     baseJurisdictionSourceUrl: 'https://api.airmap.com/tiledata/v1/base-jurisdiction/{z}/{x}/{y}',
     enableRecommendedRulesets: false,
     mapStylesUrl: 'https://cdn.airmap.com/static/map-styles',
