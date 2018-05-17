@@ -128,18 +128,6 @@ Here's an example of a minimal setup. See [Documentation](#documentation) for mo
 
 Or if using from NPM:
 
-```js
-import ContextualAirspacePlugin from 'airmap-contextual-airspace-plugin'
-
-var config = /* your config json generated from AirMap's Developer Portal */;
-var map = new ContextualAirspacePlugin(config, {
-    container: 'airspaceMap',
-    center: [33.9416, -118.4085],
-    layers: ['airports_recreational', 'national_parks', 'tfrs', 'wildfires']
-    /* refer to the docs for a comprehensive list of options */
-});
-```
-
 ```javascript
 import ContextualAirspacePlugin from 'airmap-contextual-airspace-plugin'
 
