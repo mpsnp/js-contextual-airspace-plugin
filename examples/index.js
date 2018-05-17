@@ -1,30 +1,20 @@
 const ContextualAirspacePlugin = require('../src/index.js').default
 const AIRMAP_API_KEY = localStorage.getItem('AIRMAP_API_KEY')
 const MAPBOX_ACCESS_TOKEN = localStorage.getItem('MAPBOX_ACCESS_TOKEN')
-const style = require('./light.json')
 
 if (AIRMAP_API_KEY && MAPBOX_ACCESS_TOKEN) {
     mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN
     
+    const standard = 'mapbox://styles/airmap/cipg7gw9u000jbam53kwpal1q'
     const light = 'mapbox://styles/airmap/ciprepvql000xbbnn8anxyb19'
+    const dark = 'mapbox://styles/airmap/ciprerhe7000vbfnj3luzf2g6'
+    const satellite = 'mapbox://styles/airmap/ciprk6y7b001qekm7sjrh9f9v'
 
     const map = new mapboxgl.Map({
         container: 'map',
         style: light,
-        // New Orleans
-        // center: [-89.804440, 30.067680],
         // Santa Monica
         center: [-118.496475, 34.024212],
-        // London, England
-        // center: [-0.12460079191509976, 51.449016371275064],
-        // Lyon, France
-        // center: [4.8467100, 45.7484600],
-        // Vancouver, Canada
-        // center: [-123.738246, 48.838410],
-        // Berlin, Germany
-        // center: [13.409779, 52.520645],
-        // Christchurch, New Zealand
-        // center: [172.639847, -43.525650],
         zoom: 13
     })
     const config = {
@@ -40,7 +30,6 @@ if (AIRMAP_API_KEY && MAPBOX_ACCESS_TOKEN) {
         }
     }
     const options = {
-        
         preferredRulesets: [
             'usa_part_107',
             'deu_rules_waiver'
@@ -50,7 +39,6 @@ if (AIRMAP_API_KEY && MAPBOX_ACCESS_TOKEN) {
         ],
         enableRecommendedRulesets: true,
         theme: 'light',
-        
         // Specific options for development purposes only
         baseJurisdictionSourceUrl: localStorage.getItem('BASE_JURISDICTION_SOURCE_URL'),
         mapStylesUrl: localStorage.getItem('MAP_STYLES_URL'),
