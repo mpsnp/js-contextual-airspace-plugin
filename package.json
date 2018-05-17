@@ -15,7 +15,8 @@
     "release": "npm install && npm test && npm run build && sh ./scripts/prepare.sh && sh ./scripts/deploy.sh",
     "release:next": "npm install && npm test && npm run build && sh ./scripts/deploy-next.sh",
     "start": "webpack-dev-server --mode development --hot --open",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "export NODE_ENV=development NODE_PATH=./ && jest && rm test-report.xml",
+    "test:circle": "export NODE_ENV=development NODE_PATH=./ && TEST_REPORT_PATH=$CIRCLE_TEST_REPORTS/jest TEST_REPORT_FILENAME=unit.xml jest --runInBand"
   },
   "keywords": [
     "airmap",
@@ -42,6 +43,8 @@
     "babel-preset-stage-1": "^6.24.1",
     "babelify": "^8.0.0",
     "browserify": "^16.2.2",
+    "jest": "^22.4.3",
+    "jest-junit-reporter": "^1.1.0",
     "jsdoc-to-markdown": "^4.0.1",
     "standard-version": "^4.3.0",
     "uglify-js": "^3.3.25",

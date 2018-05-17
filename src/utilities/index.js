@@ -125,7 +125,6 @@ export function getBaseJurisdictionLayer(baseJurisdictionSourceUrl) {
  *         Array of Jurisdiction objects with a ruleset object keyed by ruleset type.
  */
 export const organizeJurisdictionRulesetsByType = jurisdictions => {
-    console.log('organizeJurisdictionRulesetsByType', jurisdictions);
     return jurisdictions.map(jurisdiction => ({
         ...jurisdiction,
         rulesets: exports.parseRulesets(jurisdiction.rulesets, jurisdiction.region, jurisdiction.id)
@@ -160,13 +159,6 @@ export const organizeJurisdictionsByRegion = (jurisdictions) => {
     })
     return jurisdictionLevel
 }
-
-/**
- * @typedef {Object.<Array>} RulesetOrganizedByType
- * @property {Array} required Rulesets that are required.
- * @property {Array} pick1 Rulesets that are classified as Pick One rulesets.
- * @property {Array} optional Rulesets that are optional.
- */
 
 /**
  * @typedef {Array.<Object>} RulesetNotOrganizedByType
