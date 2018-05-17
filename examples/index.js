@@ -59,7 +59,6 @@ if (AIRMAP_API_KEY && MAPBOX_ACCESS_TOKEN) {
             selectedRulelsets: plugin.getSelectedRulesets()
         })
     }, 5000)
-
 } else {
     console.error(
         'Missing AIRMAP_API_KEY or MAPBOX_ACCESS_TOKEN. ' +

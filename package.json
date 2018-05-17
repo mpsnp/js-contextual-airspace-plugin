@@ -1,5 +1,5 @@
 {
-  "name": "airmap-contextualairspace-plugin",
+  "name": "airmap-contextual-airspace-plugin",
   "version": "1.0.0",
   "description": "Mapbox GL JS plugin to view and interact with AirMap's Contextual Airspace Rules",
   "main": "dist/index.js",
@@ -9,8 +9,8 @@
     "init": "mkdir dist",
     "prebuild": "npm run clean && npm run init",
     "build": "babel --out-dir dist src --copy-files && npm run build:compile && npm run build:minify",
-    "build:compile": "browserify src/index.js -s AirMap.ContextualAirspacePlugin > dist/airmap.contextualairspaceplugin.js -t [ babelify --plugins [ 'add-module-exports' ] ]",
-    "build:minify": "uglifyjs dist/airmap.contextualairspaceplugin.js -m -c > dist/airmap.contextualairspaceplugin.min.js",
+    "build:compile": "browserify src/index.js -s AirMap.ContextualAirspacePlugin > dist/airmap.contextual-airspace-plugin.js -t [ babelify --plugins [ 'add-module-exports' ] ]",
+    "build:minify": "uglifyjs dist/airmap.contextual-airspace-plugin.js -m -c > dist/airmap.contextual-airspace-plugin.min.js",
     "docs": "jsdoc2md src/index.js > API.md",
     "release": "npm install && npm test && npm run build && sh ./scripts/prepare.sh && sh ./scripts/deploy.sh",
     "release:next": "npm install && npm test && npm run build && sh ./scripts/deploy-next.sh",
