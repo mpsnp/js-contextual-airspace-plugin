@@ -1,15 +1,12 @@
 import {
     get,
-    isEqual,
     intersectionWith,
     mergeWith
 } from 'lodash'
 import {
-    colors,
     supportedThemes
 } from '../constants'
 import moment from 'moment'
-import * as turfBuffer from '@turf/buffer'
 
 /**
 * Merges defaults with options if option values are not null.
@@ -24,25 +21,6 @@ export const getOptions = (defaults, options) => {
         ...defaults,
         ...opts
     }
-}
-
-/**
-* Takes in an object with lng and lat values and returns a buffered point feature.
-* @param {Object} lngLat - Point lng lat object to be buffered.
-* @param {number} lngLat.lng - Longitude number.
-* @param {number} lngLat.lat - Latitude number.
-* @returns {Object} - GeoJson Feature
-* @private
-*/
-export const getClickedGeometry = (lngLat) => {
-    return turfBuffer({
-        "type": "Feature",
-        "properties": {},
-        "geometry": {
-            "type": "Point",
-            "coordinates": [lngLat.lng, lngLat.lat]
-        }
-    }, 0.05, 'kilometers')
 }
 
 /**
