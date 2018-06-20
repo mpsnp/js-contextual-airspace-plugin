@@ -58,6 +58,7 @@ if (AIRMAP_API_KEY && MAPBOX_ACCESS_TOKEN) {
             jurisdictions: plugin.getJurisdictions(),
             selectedRulelsets: plugin.getSelectedRulesets()
         })
+        plugin.updateRulesets(['usa_sec_333'], [], false);
     }, 5000)
 } else {
     console.error(
