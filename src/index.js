@@ -183,11 +183,14 @@ export default class ContextualAirspacePlugin {
     * Method that takes a list of preferred rulesets, queries the map for new
     * jurisdictions and updates the state of the class with the state of jurisdictions
     * and default selected rulesets. Additionally, map layers are updated here.
-    * @private
+    * @param {Array} [preferredRulesets] - list of preferred rulesets.
+    * @param {Array} [overrideRulesets] - list of override rulesets.
+    * @param {Boolean} [enableRecommendedRulesets] - enables recommended rulesets.
+    * @public
     */
     updateRulesets(preferredRulesets, overrideRulesets, enableRecommendedRulesets) {
         if (this.map.isMoving()) return
-        let jurisdictions = this.getJurisdictionsFromMap()
+        const jurisdictions = this.getJurisdictionsFromMap()
         if (!jurisdictions.length) {
             return this.handleNoJurisdictions()
         }
@@ -220,7 +223,7 @@ export default class ContextualAirspacePlugin {
                 We can send the rest of the rulesets to be added as we'll be checking if ruleset source already
                 exists before adding it.
             */
-            let rulesetsToRemove = differenceBy(this.selectedRulesets, defaultSelectedRulesets, 'id');
+            const rulesetsToRemove = differenceBy(this.selectedRulesets, defaultSelectedRulesets, 'id');
             rulesetsToRemove.forEach(ruleset => this.removeRuleset(ruleset));
             defaultSelectedRulesets.forEach(ruleset => this.addRuleset(ruleset));
         }
