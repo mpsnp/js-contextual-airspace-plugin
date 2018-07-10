@@ -182,6 +182,60 @@ export default class ContextualAirspacePlugin {
     /**
     * Method that takes a list of preferred rulesets, queries the map for new
     * jurisdictions and updates the state of the class with the state of jurisdictions
+    * and default selected rulesets. Additionally, map layers are updated here.
+    * @param {Array} [preferredRulesets] - list of preferred rulesets.
+    * @param {Array} [overrideRulesets] - list of override rulesets.
+    * @param {Boolean} [enableRecommendedRulesets] - enables recommended rulesets.
+    * @public
+    */
+    updateRulesets(preferredRulesets, overrideRulesets, enableRecommendedRulesets) {
+        if (this.map.isMoving()) return
+        const jurisdictions = this.getJurisdictionsFromMap()
+        if (!jurisdictions.length) {
+            return this.handleNoJurisdictions()
+        }
+
+        // Update rulesets at plugin on ui when map theme is changed
+        this.options.preferredRulesets = preferredRulesets
+        this.options.overrideRulesets = overrideRulesets
+        this.options.enableRecommendedRulesets = enableRecommendedRulesets
+
+        if (this.options.overrideRulesets && this.options.overrideRulesets.length) {
+            return this.handleOverrideRulesets(jurisdictions);
+        }
+
+        // Array of Retrieved Jurisdictions with rulesets organized by type
+        const parsedJurisdictionRulesets = organizeJurisdictionRulesetsByType(jurisdictions)
+
+        // Gathers the default selected rulesets: required, pick1 defaults, and optional if selected by user previously
+        const defaultSelectedRulesets = getDefaultSelectedRulesets(parsedJurisdictionRulesets, preferredRulesets, null, this.options.enableRecommendedRulesets);
+
+        // Handles the adding and removing of sources/layers to and from the map.
+        if (!this.selectedRulesets.length) {
+            /*
+                If selectedRulesets is empty, the plugin is loading,
+                so we'll add the preferredRulesets to the map.
+            */
+            defaultSelectedRulesets.forEach(ruleset => this.addRuleset(ruleset));
+        } else {
+            /*
+                If selectedRulesets is not empty, we find the differences (to remove) and remove those.
+                We can send the rest of the rulesets to be added as we'll be checking if ruleset source already
+                exists before adding it.
+            */
+            const rulesetsToRemove = differenceBy(this.selectedRulesets, defaultSelectedRulesets, 'id');
+            rulesetsToRemove.forEach(ruleset => this.removeRuleset(ruleset));
+            defaultSelectedRulesets.forEach(ruleset => this.addRuleset(ruleset));
+        }
+
+        this.jurisdictions = parsedJurisdictionRulesets;
+        this.selectedRulesets = defaultSelectedRulesets;
+        this.preferredRulesets = preferredRulesets;
+    }
+
+    /**
+    * Method that takes a list of preferred rulesets, queries the map for new
+    * jurisdictions and updates the state of the class with the state of jurisdictions
     * and default selected rulesets. Additionally, map layer updates are kicked off here.
     * This method will handle firing off the 'jurisdictionChange' event if jurisdictions have changed.
     * This method is called when the plugin first loads, and when the map finishes zooming or panning.
