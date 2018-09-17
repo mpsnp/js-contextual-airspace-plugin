@@ -26,7 +26,7 @@
     "uav"
   ],
   "author": "AirMap, Inc. <developers@airmap.com> (https://airmap.com)",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "dependencies": {
     "axios": "^0.18.0",
     "lodash": "^4.17.10",
