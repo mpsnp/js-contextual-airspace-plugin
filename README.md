@@ -98,7 +98,7 @@ Here's an example of a minimal setup. See [Documentation](#documentation) for mo
                     theme: 'light'
                     /* refer to the docs for a comprehensive list of options */
                 }
-                const plugin = new AirMap.ContextualAirspacePlugin(config, options);
+                const plugin = new this.AirMap.ContextualAirspacePlugin(config, options);
                 map.addControl(plugin, 'top-left')
 
                 // Example for how ruleset changes are surfaced to the consuming application.
