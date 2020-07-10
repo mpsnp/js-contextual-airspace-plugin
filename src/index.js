@@ -202,7 +202,7 @@ export default class ContextualAirspacePlugin {
     * @param {Boolean} [enableRecommendedRulesets] - enables recommended rulesets.
     * @public
     */
-    updateRulesets(preferredRulesets, overrideRulesets, enableRecommendedRulesets) {
+    updateRulesets = (preferredRulesets, overrideRulesets, enableRecommendedRulesets) => {
         if (this.map.isMoving()) return
         const jurisdictions = this.getJurisdictionsFromMap()
         if (!jurisdictions.length) {
