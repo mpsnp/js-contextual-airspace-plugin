@@ -91,7 +91,7 @@ export default class ContextualAirspacePlugin {
         this.map = map;
         this.requestStyles();
         if (this.map.loaded()) this.mapSetup();
-        else this.map.on('load', () => this.mapSetup());
+        else this.map.on('load', this.mapSetup);
         
 
         this.el = document.createElement('div');
@@ -107,8 +107,10 @@ export default class ContextualAirspacePlugin {
     * @returns {ContextualAirspace} - `this`
     */
     onRemove = map => {
+        this.map.off('load', this.mapSetup);
         this.map.off('click', this.handleMapClick);
-        this.map.off('moveend', this.handleMapUserActionEnd);
+        this.map.off('moveend', this._debouncedHandleMapUserActionEnd);
+        this.map.off('sourcedata', this.handleSourceDataUpdate);
         
         this.map = null;
         this.el.parentNode.removeChild(this.el);
@@ -156,10 +158,10 @@ export default class ContextualAirspacePlugin {
     */
     mapSetup = () => {
         this.setupBaseJurisdictionSource();
-        this.map.on('click', e => this.handleMapClick(e));
+        this.map.on('click', this.handleMapClick);
         // Handle map user action - (drag, pan, or zoom end)
         // handleMapUserActionEnd parses new jurisdiction data and handles adding/removing layers
-        this.map.on('moveend', debounce(this.handleMapUserActionEnd, 700, { 'trailing': true }));
+        this.map.on('moveend', this._debouncedHandleMapUserActionEnd);
         this.isPluginLoaded = true;
     }
 
@@ -169,12 +171,14 @@ export default class ContextualAirspacePlugin {
     */
     setupBaseJurisdictionSource = () => {
         this.map.addLayer(getBaseJurisdictionLayer(this.options.baseJurisdictionSourceUrl), 'background');
-        this.map.on('sourcedata', data => {
-            if (data.isSourceLoaded && data.sourceId === 'jurisdictions' && !this.baseJurisdictionSourceLoaded) {
-                this.receiveJurisdictions(this.options.preferredRulesets)
-                this.baseJurisdictionSourceLoaded = true
-            }
-        });
+        this.map.on('sourcedata', this.handleSourceDataUpdate);
+    }
+
+    handleSourceDataUpdate = (data) => {
+        if (data.isSourceLoaded && data.sourceId === 'jurisdictions' && !this.baseJurisdictionSourceLoaded) {
+            this.receiveJurisdictions(this.options.preferredRulesets)
+            this.baseJurisdictionSourceLoaded = true
+        }
     }
 
     /**
@@ -322,6 +326,8 @@ export default class ContextualAirspacePlugin {
     handleMapUserActionEnd = () => {
         this.receiveJurisdictions(this.preferredRulesets);
     }
+
+    _debouncedHandleMapUserActionEnd = debounce(this.handleMapUserActionEnd, 700, { 'trailing': true })
 
     /**
     * Called when no jurisdictions are found on the map. Likely a zoom level issue.
